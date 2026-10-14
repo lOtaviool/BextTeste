@@ -1,0 +1,13 @@
+{
+  "tasks": [
+    {
+      "id": "1",
+      "title": "Estudar Vue.js 3",
+      "description": "Aprender Composition API e Pinia",
+      "priority": "Alta",
+      "category": "Estudo",
+      "dueDate": "2026-10-25",
+      "completed": false
+    }
+  ]
+}
