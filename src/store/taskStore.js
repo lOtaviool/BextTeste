@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { api } from '../service/api'
 
+// formata a data local
 function getLocalDate() {
   const now = new Date()
   const year = now.getFullYear()
@@ -11,6 +12,7 @@ function getLocalDate() {
   return `${year}-${month}-${day}`
 }
 
+//Valida a data
 function isValidDate(value) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false
 

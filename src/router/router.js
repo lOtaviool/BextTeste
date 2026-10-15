@@ -17,6 +17,7 @@ const router = createRouter({
   routes
 })
 
+// Guard de proteção do routes
 router.beforeEach((to, from, next) => {
   const isAuthenticated = localStorage.getItem('isAuthenticated')
 
