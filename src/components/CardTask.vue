@@ -1,6 +1,6 @@
 <script setup>
 import Button from './Button.vue'
-import { Plus, Trash, CheckCircle } from 'lucide-vue-next'
+import { Check, Trash } from 'lucide-vue-next'
 
 const props = defineProps({
   task: {
@@ -9,10 +9,10 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['toggle-task', 'delete-task', 'edit-task'])
+const emit = defineEmits(['complete-task', 'delete-task', 'edit-task'])
 
-function onToggleTask(taskId) {
-  emit('toggle-task', taskId)
+function onCompleteTask(taskId) {
+  emit('complete-task', taskId)
 }
 
 function onDeleteTask(taskId) {
@@ -22,6 +22,10 @@ function onDeleteTask(taskId) {
 function onEditTask(task) {
   emit('edit-task', task)
 }
+
+function formatCompletionDate(value) {
+  return new Date(`${value}T00:00:00`).toLocaleDateString('pt-BR')
+}
 </script>
 
 <template>
@@ -30,24 +34,47 @@ function onEditTask(task) {
       <Button
         class="task-toggle"
         :class="props.task.completed ? 'done' : 'pending'"
-        @click="onToggleTask(props.task.id)"
-        :aria-label="props.task.completed ? 'Marcar como pendente' : 'Marcar como concluída'"
-      />
+        @click="onCompleteTask(props.task.id)"
+        :title="props.task.completed ? 'Concluída' : 'Concluir'"
+        :aria-label="
+          props.task.completed
+            ? 'Marcar como pendente'
+            : 'Marcar como concluída'
+        "
+      >
+        <Check class="task-toggle-icon" />
+      </Button>
 
       <div class="task-body">
         <div class="task-heading">
-          <h3 :class="props.task.completed ? 'completed-title' : ''">{{ props.task.title }}</h3>
+          <h3 :class="props.task.completed ? 'completed-title' : ''">
+            {{ props.task.title }}
+          </h3>
           <span class="tag">{{ props.task.category }}</span>
-          <span class="priority" :class="props.task.priority.toLowerCase()">{{ props.task.priority }}</span>
+          <span class="priority" :class="props.task.priority.toLowerCase()">{{
+            props.task.priority
+          }}</span>
         </div>
 
         <p>{{ props.task.description }}</p>
+        <p
+          v-if="props.task.completed && props.task.completionDate"
+          class="completion-date"
+        >
+          Concluída em {{ formatCompletionDate(props.task.completionDate) }}
+        </p>
       </div>
     </div>
 
     <div class="task-meta">
-      <Button class="edit-btn" @click="onEditTask(props.task)">Detalhes</Button>
-      <Button class="delete-btn" @click="onDeleteTask(props.task.id)">
+      <Button class="edit-btn" @click="onEditTask(props.task)"
+        >Ver Detalhes</Button
+      >
+      <Button
+        class="delete-btn"
+        title="Excluir Tarefa"
+        @click="onDeleteTask(props.task.id)"
+      >
         <Trash class="icon" />
       </Button>
     </div>
@@ -74,18 +101,29 @@ function onEditTask(task) {
 }
 
 .task-toggle {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  border: 2px solid #cbd5e1;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 6px 10px;
   background: #fff;
+  color: #475569;
+  font-size: 0.85rem;
+  font-weight: 600;
   cursor: pointer;
-  margin-top: 6px;
+  margin-top: 1px;
+}
+
+.task-toggle-icon {
+  width: 16px;
+  height: 16px;
 }
 
 .task-toggle.done {
   background: #22c55e;
   border-color: #22c55e;
+  color: #fff;
 }
 
 .task-toggle.pending {
@@ -120,6 +158,12 @@ function onEditTask(task) {
   color: #475569;
 }
 
+.task-body .completion-date {
+  margin-top: 8px;
+  color: #15803d;
+  font-size: 0.85rem;
+}
+
 .task-meta {
   display: flex;
   gap: 8px;
@@ -135,9 +179,9 @@ function onEditTask(task) {
   font-weight: 700;
 }
 
-.icon{
-    width: 18px !important;
-    height: 18px !important;
+.icon {
+  width: 18px !important;
+  height: 18px !important;
 }
 
 .tag {

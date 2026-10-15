@@ -8,10 +8,10 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['toggle-task', 'delete-task', 'edit-task'])
+const emit = defineEmits(['complete-task', 'delete-task', 'edit-task'])
 
-function onToggleTask(taskId) {
-  emit('toggle-task', taskId)
+function onCompleteTask(taskId) {
+  emit('complete-task', taskId)
 }
 
 function onDeleteTask(taskId) {
@@ -34,7 +34,7 @@ function onEditTask(task) {
         v-for="task in props.tasks"
         :key="task.id"
         :task="task"
-        @toggle-task="onToggleTask"
+        @complete-task="onCompleteTask"
         @delete-task="onDeleteTask"
         @edit-task="onEditTask"
       />

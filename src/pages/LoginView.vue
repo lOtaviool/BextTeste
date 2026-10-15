@@ -29,7 +29,7 @@ function handleLogin() {
   <div class="page-shell">
     <div class="login-card">
       <div class="brand">
-        <span class="badge">BEXT</span>
+        <img src="../assets/bext.svg" alt="Logo" style="width: 100px" />
         <h1>Bem-vindo</h1>
       </div>
 
@@ -38,12 +38,22 @@ function handleLogin() {
       <form class="login-form" @submit.prevent="handleLogin">
         <label>
           <span>E-mail</span>
-          <Input v-model="email" type="email" placeholder="seu@email.com" required />
+          <Input
+            v-model="email"
+            type="email"
+            placeholder="seu@email.com"
+            required
+          />
         </label>
 
         <label>
           <span>Senha</span>
-          <Input v-model="password" type="password" placeholder="••••••••" required />
+          <Input
+            v-model="password"
+            type="password"
+            placeholder="••••••••"
+            required
+          />
         </label>
 
         <Button type="submit">Entrar</Button>
@@ -84,7 +94,7 @@ function handleLogin() {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: #4f46e5;
+  background: #0527ef;
   color: #fff;
   font-weight: 700;
   width: 52px;
@@ -127,7 +137,9 @@ h1 {
   font-size: 1rem;
   color: #334155;
   background: #f8fafc;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .login-form input:focus {
@@ -140,13 +152,15 @@ button {
   margin-top: 8px;
   border: none;
   border-radius: 12px;
-  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  background: #0527ef;
   color: #ffffff;
   font-size: 1rem;
   font-weight: 700;
   padding: 13px 18px;
   cursor: pointer;
-  transition: transform 0.2s ease, opacity 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
 }
 
 button:hover {

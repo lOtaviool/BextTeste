@@ -4,7 +4,12 @@ import DashboardView from '../pages/DashboardView.vue'
 
 const routes = [
   { path: '/', name: 'Login', component: LoginView },
-  { path: '/dashboard', name: 'Dashboard', component: DashboardView, meta: { requiresAuth: true } }
+  {
+    path: '/dashboard',
+    name: 'Dashboard',
+    component: DashboardView,
+    meta: { requiresAuth: true }
+  }
 ]
 
 const router = createRouter({

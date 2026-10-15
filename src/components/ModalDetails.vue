@@ -22,7 +22,8 @@ const form = ref({
   description: '',
   priority: 'Média',
   category: 'Estudo',
-  completed: false
+  completed: false,
+  completionDate: null
 })
 
 const isEditing = computed(() => !!props.task)
@@ -37,7 +38,8 @@ watch(
         description: task.description || '',
         priority: task.priority || 'Média',
         category: task.category || 'Estudo',
-        completed: Boolean(task.completed)
+        completed: Boolean(task.completed),
+        completionDate: task.completionDate || null
       }
       return
     }
@@ -48,7 +50,8 @@ watch(
       description: '',
       priority: 'Média',
       category: 'Estudo',
-      completed: false
+      completed: false,
+      completionDate: null
     }
   },
   { immediate: true }
@@ -77,8 +80,12 @@ function submitForm() {
       <div class="modal-card" role="dialog" aria-modal="true">
         <div class="modal-header">
           <div>
-            <p class="eyebrow">{{ isEditing ? 'Editar tarefa' : 'Nova tarefa' }}</p>
-            <h2>{{ isEditing ? 'Detalhes da tarefa' : 'Adicionar nova tarefa' }}</h2>
+            <p class="eyebrow">
+              {{ isEditing ? 'Editar tarefa' : 'Nova tarefa' }}
+            </p>
+            <h2>
+              {{ isEditing ? 'Detalhes da tarefa' : 'Adicionar nova tarefa' }}
+            </h2>
           </div>
 
           <Button class="close-btn" @click="closeModal">×</Button>
@@ -87,12 +94,20 @@ function submitForm() {
         <form class="task-form" @submit.prevent="submitForm">
           <label>
             <span>Título</span>
-            <Input v-model="form.title" type="text" placeholder="Título da tarefa" />
+            <Input
+              v-model="form.title"
+              type="text"
+              placeholder="Título da tarefa"
+            />
           </label>
 
           <label>
             <span>Descrição</span>
-            <Input v-model="form.description" type="text" placeholder="Descrição" />
+            <Input
+              v-model="form.description"
+              type="text"
+              placeholder="Descrição"
+            />
           </label>
 
           <div class="form-row">
@@ -117,7 +132,9 @@ function submitForm() {
 
           <div class="modal-actions">
             <Button class="secondary-btn" @click="closeModal">Cancelar</Button>
-            <Button type="submit" class="primary-btn">{{ isEditing ? 'Salvar alterações' : 'Criar tarefa' }}</Button>
+            <Button type="submit" class="primary-btn">{{
+              isEditing ? 'Salvar' : 'Criar'
+            }}</Button>
           </div>
         </form>
       </div>
@@ -224,7 +241,7 @@ h2 {
 }
 
 .primary-btn {
-  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  background: #0527ef;
   color: #fff;
 }
 

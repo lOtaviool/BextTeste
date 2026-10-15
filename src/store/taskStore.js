@@ -2,15 +2,41 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { api } from '../service/api'
 
+function getLocalDate() {
+  const now = new Date()
+  const year = now.getFullYear()
+  const month = String(now.getMonth() + 1).padStart(2, '0')
+  const day = String(now.getDate()).padStart(2, '0')
+
+  return `${year}-${month}-${day}`
+}
+
+function isValidDate(value) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false
+
+  const [year, month, day] = value.split('-').map(Number)
+  const date = new Date(year, month - 1, day)
+
+  return (
+    date.getFullYear() === year &&
+    date.getMonth() === month - 1 &&
+    date.getDate() === day
+  )
+}
+
 export const useTaskStore = defineStore('task', () => {
   const tasks = ref([])
   const filterCategory = ref('')
   const filterPriority = ref('')
 
   const filteredTasks = computed(() => {
-    return tasks.value.filter(task => {
-      const matchCategory = filterCategory.value ? task.category === filterCategory.value : true
-      const matchPriority = filterPriority.value ? task.priority === filterPriority.value : true
+    return tasks.value.filter((task) => {
+      const matchCategory = filterCategory.value
+        ? task.category === filterCategory.value
+        : true
+      const matchPriority = filterPriority.value
+        ? task.priority === filterPriority.value
+        : true
       return matchCategory && matchPriority
     })
   })
@@ -28,7 +54,8 @@ export const useTaskStore = defineStore('task', () => {
     try {
       const payload = {
         ...taskData,
-        completed: Boolean(taskData.completed)
+        completed: Boolean(taskData.completed),
+        completionDate: taskData.completionDate || null
       }
 
       await api.post('/tasks', payload)
@@ -54,7 +81,7 @@ export const useTaskStore = defineStore('task', () => {
   async function deleteTask(id) {
     try {
       await api.delete(`/tasks/${id}`)
-      tasks.value = tasks.value.filter(task => task.id !== id)
+      tasks.value = tasks.value.filter((task) => task.id !== id)
       await fetchTasks()
       return true
     } catch (error) {
@@ -63,14 +90,23 @@ export const useTaskStore = defineStore('task', () => {
     }
   }
 
-  async function toggleTask(id) {
+  async function completeTask(id) {
     try {
-      const taskToUpdate = tasks.value.find(task => task.id === id)
+      const taskToUpdate = tasks.value.find((task) => task.id === id)
       if (!taskToUpdate) return false
+
+      const completed = !taskToUpdate.completed
+      const completionDate = completed ? getLocalDate() : null
+
+      if (completed && !isValidDate(completionDate)) {
+        console.error('Data de conclusão inválida:', completionDate)
+        return false
+      }
 
       const updatedTask = {
         ...taskToUpdate,
-        completed: !taskToUpdate.completed
+        completed,
+        completionDate
       }
 
       await api.put(`/tasks/${id}`, updatedTask)
@@ -96,7 +132,7 @@ export const useTaskStore = defineStore('task', () => {
     addTask,
     updateTask,
     deleteTask,
-    toggleTask,
+    completeTask,
     setFilters
   }
 })
