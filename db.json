@@ -1,0 +1,32 @@
+{
+  "tasks": [
+    {
+      "id": "1",
+      "title": "Estudar Vue.js",
+      "description": "Aprender Vue com excelência",
+      "priority": "Baixa",
+      "category": "Estudo",
+      "dueDate": "2026-10-25",
+      "completed": true,
+      "completionDate": "2026-10-15"
+    },
+    {
+      "id": "uRz9GlE",
+      "title": "Tarefa teste 1",
+      "description": "teste teste",
+      "priority": "Média",
+      "category": "Cliente",
+      "completed": false,
+      "completionDate": null
+    },
+    {
+      "id": "rIieZsy",
+      "title": "Tarefa teste 2",
+      "description": "123 testando",
+      "priority": "Alta",
+      "category": "Produtividade",
+      "completed": false,
+      "completionDate": null
+    }
+  ]
+}
